@@ -1,4 +1,4 @@
-using Chip8_Blazor;
+using Chip_8_Blazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
