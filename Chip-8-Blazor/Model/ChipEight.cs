@@ -160,5 +160,75 @@
             v[regIndexOne] = (byte)(v[regIndexOne] & v[regIndexTwo]);
         }
 
+        private void BitwiseXor(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+            int regIndexTwo = opCode.Y;
+
+            v[regIndexOne] = (byte)(v[regIndexOne] ^ v[regIndexTwo]);
+        }
+
+        private void AddRegisters(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+            int regIndexTwo = opCode.Y;
+
+            int sum = v[regIndexOne] + v[regIndexTwo];
+
+            if (sum > 255)
+            {
+                v[0xF] = 1;
+                v[regIndexOne] = ((byte)(sum & 0x0FF));
+            } else
+            {
+                v[0xF] = 0;
+                v[regIndexOne] = (byte)sum;
+            }
+        }
+
+        private void SubRegisters(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+            int regIndexTwo = opCode.Y;
+
+            if (v[regIndexOne] > v[regIndexTwo]) v[0xF] = 1;
+            else v[0xF] = 0;
+
+            v[regIndexOne] -= v[regIndexTwo];
+        }
+
+        private void SHRRegisters(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+
+            byte lsb = ((byte)(v[regIndexOne] & 0x1));
+
+            v[0xF] = (byte)(lsb == 1 ? 0x0 : 0x1);
+
+            v[regIndexOne] /= 2;
+        }
+
+        private void SUBNRegisters(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+            int regIndexTwo = opCode.Y;
+
+            if (v[regIndexTwo] > v[regIndexOne]) v[0xF] = 1;
+            else v[0xF] = 0;
+
+            v[regIndexOne] = (byte)(v[regIndexTwo] - v[regIndexOne]);
+        }
+
+        private void SHLRegisters(OpCode opCode)
+        {
+            int regIndexOne = opCode.X;
+
+            byte lsb = ((byte)(v[regIndexOne] & 0x1));
+
+            v[0xF] = (byte)(lsb == 1 ? 0x1 : 0x0);
+
+            v[regIndexOne] *= 2;
+        }
+
     }
 }
